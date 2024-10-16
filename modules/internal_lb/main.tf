@@ -64,3 +64,27 @@ resource "google_compute_address" "internal_lb_ip" {
   name   = "ilb-ip-${var.vpc_name}"
   region = var.region
 }
+
+# Internal Load Balancer for VPC-1
+module "internal_lb_vpc1" {
+  source              = "./modules/internal_lb"
+  vpc_name            = module.vpc1.vpc_name
+   vpc_id              = module.vpc1.vpc_id
+  subnet_id           = module.vpc1.subnet_id
+  region              = var.region
+  instance_group_name = module.mig_vpc1.instance_group_self_link # MIG for VPC-1
+  reserved_subnet_ip_range = "192.168.1.0/24" # Reserved subnet range
+  depends_on          = [module.http_lb]
+}
+
+# Internal Load Balancer for VPC-2
+module "internal_lb_vpc2" {
+  source              = "./modules/internal_lb"
+  vpc_name            = module.vpc2.vpc_name
+  vpc_id              = module.vpc2.vpc_id
+  subnet_id           = module.vpc2.subnet_id
+  region              = var.region
+  instance_group_name = module.mig_vpc2.instance_group_self_link # MIG for VPC-2
+  reserved_subnet_ip_range = "192.168.2.0/24" # Reserved subnet range
+  depends_on          = [module.http_lb]
+}
