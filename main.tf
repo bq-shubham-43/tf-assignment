@@ -37,3 +37,12 @@ module "mig_vpc2" {
   zone                = var.zone
   subnet_name         = module.vpc2.subnet_id 
 }
+
+
+# HTTP Load Balancer
+module "http_lb" {
+  source         = "./modules/http_lb"
+  region         = var.region
+  mig1_self_link = module.mig_vpc1.instance_group_self_link  # First MIG
+  mig2_self_link = module.mig_vpc2.instance_group_self_link  # Second MIG
+}
