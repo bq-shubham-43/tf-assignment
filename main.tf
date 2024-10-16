@@ -46,3 +46,12 @@ module "http_lb" {
   mig1_self_link = module.mig_vpc1.instance_group_self_link  # First MIG
   mig2_self_link = module.mig_vpc2.instance_group_self_link  # Second MIG
 }
+
+# VPC Peering 
+module "vpc_peering" {
+  source         = "./modules/vpc_peering"
+  vpc_1_name     = module.vpc1.vpc_name
+  vpc_1_self_link = module.vpc1.vpc_self_link
+  vpc_2_name     = module.vpc2.vpc_name
+  vpc_2_self_link = module.vpc2.vpc_self_link
+}
